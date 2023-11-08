@@ -18,6 +18,8 @@ body {
   justify-content: center;
   align-items: center;
 
+  font-family: sans-serif;
+
   background: linear-gradient(to bottom left, var(--main), var(--secondary));
 }
 main {
@@ -38,33 +40,46 @@ main {
 .display-section {
   border-radius: 20px;
 }
-.btns {
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: space-evenly;
-  gap: 20px;
 
-  height: 50px;
-}
-.btns button {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-  background-color: green;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  word-spacing: 2px;
-  font-weight: 600;
-  box-shadow: 1px 1px 4px;
-
-  cursor: pointer;
-}
+/* Navigation style section */
 .navigation {
   flex: 1 0 140px;
-  padding: 1rem;
+  padding: 1rem 0;
   background-color: var(--dark-secondary-alt);
 }
+.main-navs {
+  list-style: none;
+  width: inherit;
+  height: 100%;
+  /* background-color: red; */
+}
+.main-navs > * {
+  margin: 0 0 1rem;
+  padding: 1rem 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.3rem;
+  border-radius: 20px;
+
+  cursor: pointer;
+  background-color: var(--dark-secondary-alt);
+}
+.main-navs > *:hover {
+  background-color: var(--dark-secondary);
+  border-radius: 0;
+}
+.active {
+  text-transform: uppercase;
+  border-radius: 0;
+  
+  background-color: var(--dark-secondary);
+}
+/* .main-navs li:first-child:hover {
+  padding: 0;
+} */
+
+
+/* Display style section */
 .display-section {
   flex: 3 1 400px;
   background-color: var(--dark-secondary-alt);
@@ -87,10 +102,6 @@ main {
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
-  /* background-color: green; */
-  /* background-color: var(--main); */
-  /* background-color: var(--main); */
 }
 .message {
   font-size: min(2rem, max(16px, 4vw));
@@ -140,6 +151,28 @@ main {
 
   background-color: transparent;
   animation: loading-spinner 500ms linear infinite;
+}
+.btns {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-evenly;
+  gap: 20px;
+
+  height: 50px;
+}
+.btns button {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: green;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  word-spacing: 2px;
+  font-weight: 600;
+  box-shadow: 1px 1px 4px;
+
+  cursor: pointer;
 }
 
 .hidden {
