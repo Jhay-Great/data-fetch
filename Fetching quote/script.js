@@ -9,7 +9,11 @@ const displaySectionContainer = document.querySelector(".display-section");
 const mainQuoteContainer = document.querySelector(".main-quote-container");
 
 // State variables
-let state = {};
+let state = {
+    containers: {},
+    content: {},
+};
+const savedQuotes = [];
 
 
 // Simple functions
@@ -38,7 +42,6 @@ const generateQuote = async function () {
 };
 
 const renderMessage = function (container, message) {
-    console.log(container);
   container.innerHTML = "";
   container.insertAdjacentHTML("afterbegin", message);
 };
@@ -48,7 +51,7 @@ const renderMessage = function (container, message) {
 
 // handling navigation
 navContainer.addEventListener("click", function (e) {
-  const navElements = e.target.closest("ul").querySelectorAll("li");
+  const navElements = e.target?.closest("ul")?.querySelectorAll("li");
 //   console.log(e.target);
 
   if (e.target.closest("ul")) {
@@ -83,24 +86,38 @@ navContainer.addEventListener("click", function (e) {
         `;
     renderMessage(displaySectionContainer, markup);
 
-    return state = {
-        spinner: document.querySelector('.spinner-container'),
-        mainQuoteContainer: document.querySelector('.main-quote-container'),
-    }
+    // return state = {
+    //     spinner: document.querySelector('.spinner-container'),
+    //     mainQuoteContainer: document.querySelector('.main-quote-container'),
+    // }
+    state.containers.spinner = document.querySelector('.spinner-container');
+    state.containers.mainQuoteContainer = document.querySelector('.main-quote-container');
 
   }
 
   // saved quote nav
   if (e.target.classList.contains("saved-quotes-nav")) {
-    const markup = `
-        <section class="saved-quote-container">
-            <div class="saved-quote">
-            <p class="message">Hello me, I saved this quote because it's one of my favorite</p>
-            <p class="author">cool sage</p>
-            <button class="remove-btn">Remove quote</button>
-            </div>
-        </section> `;
-    renderMessage(displaySectionContainer, markup);
+    if(savedQuotes.length === 0) {
+        const markup = `
+            <section class="saved-quote-container">
+                <div class="saved-quote">
+                <p class="message">Hello me, I saved this quote because it's one of my favorite</p>
+                <p class="author">cool sage</p>
+                <button class="remove-btn">Remove quote</button>
+                </div>
+            </section> `;
+        renderMessage(displaySectionContainer, markup);
+    }
+    console.log(displaySectionContainer);
+    if(savedQuotes.length !== 0) {
+        console.log(savedQuotes);
+        displaySectionContainer.innerHTML = '';
+        savedQuotes.map(quote => {
+            const markup = `<p> ${quote} </p>`;
+            // renderMessage(displaySectionContainer, markup);
+            displaySectionContainer.insertAdjacentHTML('afterbegin', markup);
+        })
+    }
   }
 });
 
@@ -110,34 +127,53 @@ displaySectionContainer.addEventListener("click", function (e) {
 
     
     const getQuote = async function () {
-      displaySpinner(state.spinner);
+      displaySpinner(state.containers.spinner);
       try {
         const data = await generateQuote();
-        console.log(data)
-        const { content, author, date } = data;
+        console.log(data);
+
+        // const {content, author, date} = data;
+        // state.content.test = 'test';
+
+        state.content.content = data.content;
+        state.content.author = data.author;
+        state.content.date = data.date;
+
+        // const {state: {content: {content}}} = data;
 
         const markup = `
             <div class="quote-container">
-                <p class="message"> ${content} </p>
-                <p class="author"> By: ${author} </p>
-                <p class="date">${date}</p>
+                <p class="message"> ${state.content.content} </p>
+                <p class="author"> By: ${state.content.author} </p>
+                <p class="date">${state.content.date}</p>
             </div>
         `;
-        renderMessage(state.mainQuoteContainer, markup);
-        displaySpinner(state.spinner);
+        renderMessage(state.containers.mainQuoteContainer, markup);
+        displaySpinner(state.containers.spinner);
       } catch (err) {
-        renderMessage(state.mainQuoteContainer, err.message);
-        displaySpinner(state.spinner);
+        renderMessage(state.containers.mainQuoteContainer, err.message);
+        displaySpinner(state.containers.spinner);
         // console.error(err);
       }
       console.log("w");
     };
     getQuote();
   }
+
+//   when classList is add-quote
+  if (e.target === e.target.closest('.add-quote')) {
+    const {content: {content}} = state;
+    console.log(content);
+    savedQuotes.push(content);
+    // state.containers = 'w';
+    // console.log(state);
+    // console.log(state.content)
+
+  }
 });
 
+/** On Load - default display */
 window.addEventListener('load', function() {
-    console.log(displaySectionContainer);
     const markup = `
         <section class="header-container">
             <h1 class="heading"> Quote Generator </h1>
@@ -148,19 +184,22 @@ window.addEventListener('load', function() {
 })
 
 
-
-// const data = generateQuote();
-// console.log(data);
-
-// const obj = {};
-
-// const getTestQuote = async function() {
-//     const res = await fetch('https://api.quotable.io/quotes/random');
-//     const [data] = await res.json();
-//     obj.content = data.content;
-//     obj.author = data.author;
-//     console.log(data)
-
-//     console.log(obj)
+// const obj = {
+//     boy: {
+//         name: "John",
+//         age: 20,
+//         hobbies: ["Reading", "Coding"]
+//     },
+//     girl: {
+//         name: "Jane",
+//         age: 35,
+//     }
 // }
-// getTestQuote();
+// // const {girl: {name}} = obj;
+// // console.log(name);
+
+// console.log(obj.boy.name)
+
+// // const {boy: {name}} = obj;
+// // console.log(name);
+
