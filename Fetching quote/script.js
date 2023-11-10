@@ -8,9 +8,13 @@ const btnContainer = document.querySelector(".btns");
 const displaySectionContainer = document.querySelector(".display-section");
 const mainQuoteContainer = document.querySelector(".main-quote-container");
 
+// State variables
+let state = {};
+
+
 // Simple functions
-const displaySpinner = function () {
-  spinner.classList.toggle("hidden");
+const displaySpinner = function (spin) {
+  spin.classList.toggle("hidden");
 };
 
 const generateQuote = async function () {
@@ -22,29 +26,31 @@ const generateQuote = async function () {
 
     const res = await data.json();
     const [value] = res;
-    // console.log(value);
+    console.log(value);
     return {
       author: value.author,
       content: value.content,
       date: value.dateAdded,
     };
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message + err.status);
     throw err;
   }
 };
 
 const renderMessage = function (container, message) {
+    console.log(container);
   container.innerHTML = "";
   container.insertAdjacentHTML("afterbegin", message);
 };
+
 
 // Event functionalities
 
 // handling navigation
 navContainer.addEventListener("click", function (e) {
   const navElements = e.target.closest("ul").querySelectorAll("li");
-  console.log(e.target);
+//   console.log(e.target);
 
   if (e.target.closest("ul")) {
     navElements.forEach((el) => {
@@ -59,8 +65,7 @@ navContainer.addEventListener("click", function (e) {
     const markup = `
         <!-- spinner / loader -->
         <section class="spinner-container hidden">
-          <div class="spinner">
-          </div>
+          <div class="spinner">  </div>
         </section>
         
         <!-- section display -->
@@ -76,6 +81,12 @@ navContainer.addEventListener("click", function (e) {
         </section>
         `;
     renderMessage(displaySectionContainer, markup);
+
+    return state = {
+        spinner: document.querySelector('.spinner-container'),
+        mainQuoteContainer: document.querySelector('.main-quote-container'),
+    }
+
   }
 
   // saved quote nav
@@ -96,18 +107,14 @@ navContainer.addEventListener("click", function (e) {
 displaySectionContainer.addEventListener("click", function (e) {
   if (e.target === e.target.closest(".new-quotes")) {
 
-    console.log(e.target)
+    // console.log(state.spinner, state.mainQuoteContainer)
     
     const getQuote = async function () {
-      displaySpinner();
+      displaySpinner(state.spinner);
       try {
         const data = await generateQuote();
+        console.log(data)
         const { content, author, date } = data;
-
-        console.log('hi')
-
-        // console.log(data);
-        // console.log(content, author, date);
 
         const markup = `
             <div class="quote-container">
@@ -116,15 +123,33 @@ displaySectionContainer.addEventListener("click", function (e) {
                 <p class="date">${date}</p>
             </div>
         `;
-        renderMessage(mainQuoteContainer, markup);
-        displaySpinner();
+        renderMessage(state.mainQuoteContainer, markup);
+        displaySpinner(state.spinner);
       } catch (err) {
-        renderMessage(mainQuoteContainer, err.message);
-        displaySpinner();
-        console.log(err);
+        renderMessage(state.mainQuoteContainer, err.message);
+        displaySpinner(state.spinner);
+        // console.error(err);
       }
       console.log("w");
     };
     getQuote();
   }
 });
+
+
+
+// const data = generateQuote();
+// console.log(data);
+
+// const obj = {};
+
+// const getTestQuote = async function() {
+//     const res = await fetch('https://api.quotable.io/quotes/random');
+//     const [data] = await res.json();
+//     obj.content = data.content;
+//     obj.author = data.author;
+//     console.log(data)
+
+//     console.log(obj)
+// }
+// getTestQuote();
