@@ -9,16 +9,20 @@
   --dark-secondary: #251c75;
   --dark-secondary-alt: rgb(25, 17, 81);
   --tertiary: #f23f26;
+  --font-color: #fff;
+  --shadow: #000;
 }
 body {
   width: 100%;
-  height: clamp(100vh, 130vh, 150vh);
+  /* height: clamp(100vh, 130vh, 150vh); */
+  height: 100vh;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   font-family: sans-serif;
+  color: var(--font-color);
 
   background: linear-gradient(to bottom left, var(--main), var(--secondary));
 }
@@ -33,7 +37,7 @@ main {
   gap: 20px;
   flex-wrap: wrap;
 
-  box-shadow: 2px 2px 15px 0px;
+  box-shadow: 2px 2px 15px 0px var(--shadow);
   background-color: var(--dark-secondary);
 }
 .navigation,
@@ -169,11 +173,33 @@ main {
   background-color: green;
   text-transform: uppercase;
   font-size: 0.7rem;
-  word-spacing: 2px;
+  color: var(--font-color);
   font-weight: 600;
-  box-shadow: 1px 1px 4px;
+  word-spacing: 2px;
+  box-shadow: 1px 1px 4px var(--shadow);
 
   cursor: pointer;
+}
+
+/* On load */
+section.header-container {
+  width: 100%;
+  height: inherit;
+  text-align: center;
+}
+h1.heading {
+  margin: 0 0 1rem;
+  word-spacing: 2px;
+}
+p.sub-message {
+  letter-spacing: 2px;
+}
+
+/* Basics styles */
+li {
+  list-style: none;
+  text-align: center;
+  margin: 0 0 1rem; /*change later */
 }
 
 .hidden {

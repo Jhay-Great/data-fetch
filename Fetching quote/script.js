@@ -20,7 +20,6 @@ const displaySpinner = function (spin) {
 const generateQuote = async function () {
   try {
     const data = await fetch("https://api.quotable.io/quotes/random");
-    // console.log(data);
 
     if (!data.ok) throw new Error(`${data.status} Something went wrong`);
 
@@ -45,7 +44,7 @@ const renderMessage = function (container, message) {
 };
 
 
-// Event functionalities
+// ========= Event functionalities ===============
 
 // handling navigation
 navContainer.addEventListener("click", function (e) {
@@ -71,6 +70,8 @@ navContainer.addEventListener("click", function (e) {
         <!-- section display -->
         <section class="main-quote-container">
           <p class="message">Hello me</p>
+          <ul> <li> New quote will help you generate new quote </li>
+          <li> Add quotes will save your favorite quote </li>
           <p class="author">cool sage</p>
         </section>
 
@@ -107,7 +108,6 @@ navContainer.addEventListener("click", function (e) {
 displaySectionContainer.addEventListener("click", function (e) {
   if (e.target === e.target.closest(".new-quotes")) {
 
-    // console.log(state.spinner, state.mainQuoteContainer)
     
     const getQuote = async function () {
       displaySpinner(state.spinner);
@@ -119,7 +119,7 @@ displaySectionContainer.addEventListener("click", function (e) {
         const markup = `
             <div class="quote-container">
                 <p class="message"> ${content} </p>
-                <p class="author"> ${author} </p>
+                <p class="author"> By: ${author} </p>
                 <p class="date">${date}</p>
             </div>
         `;
@@ -135,6 +135,17 @@ displaySectionContainer.addEventListener("click", function (e) {
     getQuote();
   }
 });
+
+window.addEventListener('load', function() {
+    console.log(displaySectionContainer);
+    const markup = `
+        <section class="header-container">
+            <h1 class="heading"> Quote Generator </h1>
+            <p class="sub-message">Looking to get some random quotes. Head of to Home and start generating some of the valuable and inspiring quote of all time.</p>
+        </section>
+    `;
+    renderMessage(displaySectionContainer, markup)
+})
 
 
 
