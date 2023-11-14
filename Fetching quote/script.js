@@ -54,7 +54,7 @@ navContainer.addEventListener("click", function (e) {
   const navElements = e.target?.closest("ul")?.querySelectorAll("li");
 //   console.log(e.target);
 
-  if (e.target.closest("ul")) {
+  if (e.target.closest("li")) {
     navElements.forEach((el) => {
       el.classList.remove("active");
     });
